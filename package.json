@@ -1,0 +1,31 @@
+{
+  "name": "client-transac-redline",
+  "version": "0.0.2",
+  "description": "Node.js client for transac-redline",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/redpelicans/client-transac-redline.git"
+  },
+  "keywords": [
+    "transac",
+    "log",
+    "production"
+  ],
+  "author": "ebasley@gmail.com <Eric BASLEY>",
+  "license": "Apache",
+  "bugs": {
+    "url": "https://github.com/redpelicans/client-transac-redline/issues"
+  },
+  "homepage": "https://github.com/redpelicans/client-transac-redline",
+  "dependencies":{
+    "request": "*",
+    "async": "*",
+    "underscore": "*"
+
+  }
+
+}
