@@ -1,6 +1,6 @@
 {
   "name": "client-transac-redline",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Node.js client for transac-redline",
   "main": "index.js",
   "scripts": {

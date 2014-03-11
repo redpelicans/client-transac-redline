@@ -13,16 +13,16 @@ function execTask(task, cb){
   var transac = this;
   function callbackExecTask(err, data){
     if(err){
-      pushEvent.bind(transac, 'abort')(err, null, function(){ cb(err) });
+      pushEvent.bind(transac, 'abort')("Runtime Error", err, function(){ cb(err) });
     }else{
-      pushEvent.bind(transac, 'commit')(null, null, function(){ cb(null, data); });
+      pushEvent.bind(transac, 'commit')("Transac Completed", null, function(){ cb(null, data); });
     }
   }
   try{
     task(transac, callbackExecTask);
   }catch(err){
     pushEvent.bind(transac, 'error')(err, err.stack, function(){
-      pushEvent.bind(transac, 'abort')(null, null, function(){
+      pushEvent.bind(transac, 'abort')("Runtime Exception", null, function(){
         cb(err);
       })
     })
