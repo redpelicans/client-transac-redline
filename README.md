@@ -1,7 +1,7 @@
 client-transac-redline
 ======================
 
-Node.js client for [transac-redline](https://www.npmjs.org/package/transac-redline title="transac-redline")
+Node.js client for [transac-redline](https://www.npmjs.org/package/transac-redline)
 
 
 ### Usage

@@ -6,6 +6,7 @@ var util = require('util')
   , request = require('request')
   , _ = require('underscore')
   , request = require('request')
+  , moment = require('moment')
   , async = require('async');
 
 
@@ -106,6 +107,7 @@ function Transac(name, serverUrl, options){
   this.name = name;
   this.serverUrl = serverUrl;
   this.options = _.extend(_.pick(options || {}, 'valueDate', 'nested', 'locked'), {processId: process.pid, user: process.env.USER, server: os.hostname()});
+  if(this.options.valueDate)this.options.valueDate = moment(this.options.valueDate).format('YYYY/MM/DD');
   this.exec = exec;
   this.info = pushEvent.bind(this, 'info');
   this.warning = pushEvent.bind(this, 'warning');
