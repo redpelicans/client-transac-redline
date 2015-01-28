@@ -1,15 +1,15 @@
-client-transac-redline
+transac-cli
 ======================
 
-Node.js client for [transac-redline](https://www.npmjs.org/package/transac-redline)
+Node.js client for [transac](https://www.npmjs.org/package/transac)
 
 
 ### Usage
 
 ```javascript 
-npm install client-transac-redline
+npm install --save transac-cli
 
-var transac = require('client-transac-redline');
+var transac = require('transac-cli');
 
 function run(transac, cb){
   loadingData(function(err, data){
@@ -25,7 +25,7 @@ transac.exec('Building Indicators Data', 'http://localhost:3002', run, {locked: 
 ### transac.exec(transacName, serverUrl, fct, [options, callback])
 
 * transacName {String} Transaction's label within the web interface
-* serverUrl {String} Connexion string to the transac-redline server
+* serverUrl {String} Connexion string to the transac server
 * fct {Function} Code to be run by transaction.   
   * transac {Transac} instance
   * callback {Function} to end transaction processing. If it returns an error, or an exception is raised, transaction will be aborted else commited.
@@ -45,7 +45,7 @@ transac.exec('Building Indicators Data', 'http://localhost:3002', run, {locked: 
 
 #### (commit | abort)(label, message)
 
-transparently used by client-transac-redline to end a transaction depending on fct.callback.err value.
+transparently used by transac-cli to end a transaction depending on fct.callback.err value.
 
 
 
