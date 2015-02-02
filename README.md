@@ -1,5 +1,5 @@
-transac-cli
-======================
+transac client API
+==================
 
 Node.js client for [transacd](https://github.com/redpelicans/transacd.git)
 
