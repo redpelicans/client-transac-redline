@@ -1,15 +1,15 @@
 transac-cli
 ======================
 
-Node.js client for [transac](https://www.npmjs.org/package/transac)
+Node.js client for [transacd](https://github.com/redpelicans/transacd.git)
 
 
 ### Usage
 
 ```javascript 
-npm install --save transac-cli
+npm install --save transac
 
-var transac = require('transac-cli');
+var transac = require('transac');
 
 function run(transac, cb){
   loadingData(function(err, data){
@@ -45,7 +45,7 @@ transac.exec('Building Indicators Data', 'http://localhost:3002', run, {locked: 
 
 #### (commit | abort)(label, message)
 
-transparently used by transac-cli to end a transaction depending on fct.callback.err value.
+transparently used by transac to end a transaction depending on fct.callback.err value.
 
 
 
