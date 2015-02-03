@@ -17,7 +17,7 @@ function execTask(task, cb){
       pushEvent.bind(transac, 'abort')("Runtime Error", err, function(){ cb(err) });
     }else{
       var args = Array.prototype.slice.call(arguments);
-      pushEvent.bind(transac, 'commit')("Transac Completed", null, function(){ cb.apply(null, args.slice(1)); });
+      pushEvent.bind(transac, 'commit')("Transac Completed", null, function(){ cb.apply(null, args) });
     }
   }
   try{
