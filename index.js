@@ -22,10 +22,8 @@ function execTask(task, cb){
   try{
     task(transac, callbackExecTask);
   }catch(err){
-    pushEvent.bind(transac, 'error')(err, err.stack, function(){
-      pushEvent.bind(transac, 'abort')("Runtime Exception", null, function(){
-        cb(err);
-      })
+    pushEvent.bind(transac, 'abort')("Runtime Exception", err, function(){
+      cb(err);
     })
   };
 }
@@ -100,6 +98,9 @@ function publishEvent(event, callback) {
 };
 
 function pushEvent(type, label, message, cb){
+  if(message instanceof Error){
+    message = message.message + "\n\n" + message.stack;
+  }
   this.queue.push({type: type, label: label, message: message}, cb);
 }
 
