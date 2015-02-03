@@ -12,11 +12,12 @@ var util = require('util')
 
 function execTask(task, cb){
   var transac = this;
-  function callbackExecTask(err, data){
+  function callbackExecTask(err){
     if(err){
       pushEvent.bind(transac, 'abort')("Runtime Error", err, function(){ cb(err) });
     }else{
-      pushEvent.bind(transac, 'commit')("Transac Completed", null, function(){ cb(null, data); });
+      var args = Array.prototype.slice.call(arguments);
+      pushEvent.bind(transac, 'commit')("Transac Completed", null, function(){ cb.apply(null, args.slice(1)); });
     }
   }
   try{
@@ -42,7 +43,7 @@ function exec(task, callback) {
   };
 
   request(requestOptions, function(err, response, body) {
-    if(err) return callback(err);
+    if(err) return callback(new Error("Cannot connect to transacd\n"+err.message));
     switch(response.statusCode){
       case 418:
         switch (body.code) {
