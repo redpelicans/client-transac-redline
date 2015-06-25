@@ -1,61 +1,103 @@
-// TODO: supprimer la queue
+'use strict';
 
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+exports.transac = transac;
 
-var util = require('util')
-  , os = require('os')
-  , request = require('request')
-  , _ = require('underscore')
-  , request = require('request')
-  , moment = require('moment')
-  , async = require('async');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-function execTask(task, cb){
+var _util = require('util');
+
+var _util2 = _interopRequireDefault(_util);
+
+var _os = require('os');
+
+var _os2 = _interopRequireDefault(_os);
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _request = require('request');
+
+var _request2 = _interopRequireDefault(_request);
+
+var _moment = require('moment');
+
+var _moment2 = _interopRequireDefault(_moment);
+
+var _async = require('async');
+
+var _async2 = _interopRequireDefault(_async);
+
+function execTask(task, cb) {
   var transac = this;
-  function callbackExecTask(err){
-    if(err){
-      pushEvent.bind(transac, 'abort')("Runtime Error", err, function(){ cb(err) });
-    }else{
-      var args = Array.prototype.slice.call(arguments);
-      pushEvent.bind(transac, 'commit')("Transac Completed", null, function(){ cb.apply(null, args) });
+  function callbackExecTask(err) {
+    var _arguments = arguments;
+
+    if (err) {
+      pushEvent.bind(transac, 'abort')('Runtime Error', err, function () {
+        return cb(err);
+      });
+    } else {
+      (function () {
+        var args = Array.prototype.slice.call(_arguments);
+        pushEvent.bind(transac, 'commit')('Transac Completed', null, function () {
+          return cb.apply(null, args);
+        });
+      })();
     }
   }
-  try{
+  try {
     task(transac, callbackExecTask);
-  }catch(err){
-    pushEvent.bind(transac, 'abort')("Runtime Exception", err, function(){
-      cb(err);
-    })
+  } catch (err) {
+    pushEvent.bind(transac, 'abort')('Runtime Exception', err, function () {
+      return cb(err);
+    });
   };
 }
 
-function exec(task, callback) {
-  var transac = this
-    , form = _.extend({name: transac.name}, transac.options);
-
-  if(!callback) callback = function(err){ if(err) throw err }
-
-  var requestOptions = {
-    uri: this.serverUrl + '/transacs'
-  , method: 'POST'
-  , form: form
-  , json: true
+function execute(task, callback) {
+  var transac = this,
+      form = {
+    name: transac.name,
+    nested: transac.nested || false,
+    locked: transac.locked || false,
+    processId: transac.processId,
+    user: transac.user,
+    server: transac.server
   };
 
-  request(requestOptions, function(err, response, body) {
-    if(err) return callback(new Error("Cannot connect to transacd\n"+err.message));
-    switch(response.statusCode){
+  if (transac.valueDate) form.valueDate = transac.valueDate;
+
+  if (!callback) callback = function (err) {
+    if (err) throw err;
+  };
+
+  var requestOptions = {
+    uri: this.serverUrl + '/transacs',
+    method: 'POST',
+    form: form,
+    json: true
+  };
+
+  (0, _request2['default'])(requestOptions, function (err, response, body) {
+    if (err) return callback(new Error('Cannot connect to transacd\n' + err.message));
+    switch (response.statusCode) {
       case 418:
         switch (body.code) {
           case 'locked':
-            return callback(new Error('Transaction ' + transac.name  + ' already exists and is locked'));
+            return callback(new Error('Transaction ' + transac.name + ' already exists and is locked'));
           default:
             return callback(new Error(body.toString()));
         }
       case 200:
         transac.id = body.id;
         return execTask.bind(transac)(task, callback);
-      case 500: 
+      case 500:
       default:
         var msg = 'Internal error, server responds code ' + response.statusCode;
         return callback(new Error(msg));
@@ -66,31 +108,31 @@ function exec(task, callback) {
 function publishEvent(event, callback) {
   var transac = this;
   var requestOptions = {
-    uri: this.serverUrl + '/transacs/' + transac.id + '/events'
-  , method: 'PUT'
-  , json: true
-  , form: {
-      type: event.type
-    , label: event.label || ''
-    , message: event.message || ''
+    uri: this.serverUrl + '/transacs/' + transac.id + '/events',
+    method: 'PUT',
+    json: true,
+    form: {
+      type: event.type,
+      label: event.label || '',
+      message: event.message || ''
     }
   };
 
-  request(requestOptions, function(err, response, body) {
-    if(err) return callback(err);
-    switch(response.statusCode){
+  (0, _request2['default'])(requestOptions, function (err, response, body) {
+    if (err) return callback(err);
+    switch (response.statusCode) {
       case 418:
         switch (body.code) {
           case 'notransac':
-            return callback(new Error('Transaction ' + transac.id  + " doesn't exist"));
+            return callback(new Error('Transaction ' + transac.id + ' doesn\'t exist'));
           case 'closed':
-            return callback(new Error('Transaction ' + transac.name  + " is already closed"));
+            return callback(new Error('Transaction ' + transac.name + ' is already closed'));
           default:
             return callback(body);
         }
       case 200:
         return callback(null, event);
-      case 500: 
+      case 500:
       default:
         var msg = 'Internal error, server responds code ' + response.statusCode;
         return callback(new Error(msg));
@@ -98,32 +140,48 @@ function publishEvent(event, callback) {
   });
 };
 
-function pushEvent(type, label, message, cb){
-  if(message instanceof Error){
-    message = message.message + "\n\n" + message.stack;
+function pushEvent(type, label, message, cb) {
+  if (message instanceof Error) {
+    message = message.message + '\n\n' + message.stack;
   }
-  this.queue.push({type: type, label: label, message: message}, cb);
+  this.queue.push({ type: type, label: label, message: message }, cb);
 }
 
-function Transac(name, serverUrl, options){
+var Transac = function Transac(name, serverUrl) {
+  var _ref = arguments[2] === undefined ? {} : arguments[2];
+
+  var valueDate = _ref.valueDate;
+  var nested = _ref.nested;
+  var locked = _ref.locked;
+
+  _classCallCheck(this, Transac);
+
   this.name = name;
   this.serverUrl = serverUrl;
-  this.options = _.extend(_.pick(options || {}, 'valueDate', 'nested', 'locked'), {processId: process.pid, user: process.env.USER, server: os.hostname()});
-  if(this.options.valueDate)this.options.valueDate = moment(this.options.valueDate).format('YYYY/MM/DD');
-  this.exec = exec;
+  this.nested = nested;
+  this.locked = locked;
+  this.processId = process.pid;
+  this.user = process.env.USER;
+  this.server = _os2['default'].hostname();
+  if (valueDate) {
+    if (_lodash2['default'].isString(valueDate)) this.valueDate = (0, _moment2['default'])(valueDate).format('DD/MM/YYYY');else this.valueDate = (0, _moment2['default'])(valueDate).startOf('day');
+  }
+  this.exec = execute;
   this.info = pushEvent.bind(this, 'info');
   this.warning = pushEvent.bind(this, 'warning');
   this.error = pushEvent.bind(this, 'error');
-  this.queue = async.queue(publishEvent.bind(this), 1);
+  this.queue = _async2['default'].queue(publishEvent.bind(this), 1);
 };
 
-module.exports = Transac;
-module.exports.exec = function(name, serverUrl, task, options, cb){
-  if(_.isFunction(options)){
-    cb = options;
-    options = {};
-  }
-  var t = new Transac(name, serverUrl, options);
-  t.exec(task, cb);
-  return t;
-};
+function transac(serverUrl) {
+  return function (name, task, options, cb) {
+    if (_lodash2['default'].isFunction(options)) {
+      cb = options;
+      options = {};
+    }
+    var t = new Transac(name, serverUrl, options);
+    t.exec(task, cb);
+    return t;
+  };
+}
+

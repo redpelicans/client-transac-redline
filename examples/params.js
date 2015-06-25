@@ -1,3 +1,9 @@
-module.exports = {
-  server: 'http://localhost:3002'
+export default {
+  http: {
+    port: 3004
+  },
+  rethinkdb: {
+    host: 'rethinkdb',
+    db: 'transacs'
+  }
 }

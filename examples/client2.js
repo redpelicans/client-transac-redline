@@ -1,11 +1,18 @@
-var transac = require('../');
+import  params from "./params";
+import transac  from "../src";
+
+const name = 'T9';
 
 function run(transac, cb){
-  transac.info('COCOU1', 'Messages1');
-  transac.error('COCOU1', 'Messages1');
+  console.log(`Transac ${name} is running`);
+  transac.info('label', 'message, message');
+  //throw new Error('dsqdqsdqsdqsdsq')
+  ////cb('EEEEEEREUR');
   cb();
 }
 
-transac.exec('Locked', 'http://localhost:3002', run, { locked: true }, function(err){
-  console.error(err);
-}); 
+function theEnd(err){ console.log("End transac") }
+
+transac('http://localhost:3004')(name, run, {locked: true})
+  .then(theEnd)
+  .catch(err => { console.log(err.message) });

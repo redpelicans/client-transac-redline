@@ -4,7 +4,7 @@
   "description": "Node.js client for transacd server",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/.bin/mocha --timeout 10000 --require babelhook --reporter spec"
   },
   "repository": {
     "type": "git",
@@ -16,16 +16,23 @@
     "production"
   ],
   "author": "ebasley@gmail.com <Eric BASLEY>",
-  "license": "Apache",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/redpelicans/transac/issues"
   },
   "homepage": "https://github.com/redpelicans/transac",
-  "dependencies":{
-    "request": "*",
-    "async": "*",
-    "underscore": "*"
-
+  "dependencies": {
+    "async": "^1.2.1",
+    "debug": "^2.2.0",
+    "lodash": "^3.9.3",
+    "moment": "^2.10.3",
+    "request": "^2.58.0"
+  },
+  "devDependencies": {
+    "babel": "^5.5.8",
+    "mocha": "^2.2.4",
+    "rethinkdb": "^2.0.0-2",
+    "should": "^6.0.1",
+    "source-map-support": "*"
   }
-
 }
