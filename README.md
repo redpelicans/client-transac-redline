@@ -3,7 +3,7 @@ transac client API
 
 [![Build Status](https://travis-ci.org/redpelicans/transac.svg?branch=transac2)](https://travis-ci.org/redpelicans/transac)
 [![Dependency Status](https://david-dm.org/redpelicans/transac/transac2.svg)](https://david-dm.org/redpelicans/transac/transac2)
-[![Coverage Status](https://coveralls.io/repos/redpelicans/transac/badge.svg?branch=transac2)](https://coveralls.io/r/redpelicans/transac?branch=transac2)
+[![Coverage Status](https://coveralls.io/repos/redpelicans/transac/badge.png?branch=transac2)](https://coveralls.io/r/redpelicans/transac?branch=transac2)
 
 
 Node.js client for [transacd](https://github.com/redpelicans/transacd.git) server
