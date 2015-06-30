@@ -23,6 +23,7 @@ describe('Compound Transac', () => {
     DB.init(params, err => { 
       if(err)return cb(err);
       transacd.create(params, (err, srv) => {
+        if(err) throw err;
         server = srv;
         cb();
       });

@@ -13,7 +13,8 @@ let tables = {
 };
 
 export function init(opt, cb){
-  let params = process.env['NODE_ENV'] === 'travis' ? {host: 'localhost', db: 'test'} : opt.rethinkdb;
+  //let params = process.env['NODE_ENV'] === 'travis' ? {host: 'localhost', db: 'test'} : opt.rethinkdb;
+  let params = opt.rethinkdb;
 
   function initConnection(cb){
     r.connect(params, (err, conn) => {
