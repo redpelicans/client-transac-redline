@@ -4,7 +4,7 @@
   "description": "Node.js client for transacd server",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha --timeout 10000 --require babelhook --reporter spec"
+    "test": "DEBUG=transac:* ./node_modules/.bin/mocha --timeout 10000 --require babelhook --reporter spec"
   },
   "repository": {
     "type": "git",
@@ -26,7 +26,9 @@
     "debug": "^2.2.0",
     "lodash": "^3.9.3",
     "moment": "^2.10.3",
-    "request": "^2.58.0"
+    "request": "^2.58.0",
+    "split2": "^1.0.0",
+    "yargs": "^3.14.0"
   },
   "devDependencies": {
     "babel": "^5.5.8",

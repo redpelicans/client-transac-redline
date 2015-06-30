@@ -1,0 +1,8 @@
+language: node_js
+node_js:
+  - "iojs-v2.2.1"
+before_script:
+  - sudo add-apt-repository ppa:rethinkdb/ppa -y
+  - sudo apt-get update -q
+  - sudo apt-get install rethinkdb
+

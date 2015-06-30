@@ -4,6 +4,7 @@ import _ from 'lodash';
 import request from 'request';
 import moment from 'moment';
 import async from 'async';
+import stream from 'stream';
 
 
 function execTask(task, cb){
@@ -35,6 +36,7 @@ function execute(task, callback) {
 
   if(transac.valueDate) form.valueDate = moment(transac.valueDate).format('DD/MM/YYYY');;
 
+  // obsolete
   if(!callback) callback = err => { if(err) throw err } ;
 
   let requestOptions = {
@@ -45,7 +47,7 @@ function execute(task, callback) {
   };
 
   request(requestOptions, (err, response, body) => {
-    if(err) return callback(new Error("Cannot connect to transacd\n"+err.message));
+    if(err) return callback(new Error("Cannot connect to transacd\n" + err.message));
     switch(response.statusCode){
       case 418:
         switch (body.code) {
@@ -139,8 +141,9 @@ function pushEvent(level, ...args){
   if(event.label || event.messages)this.queue.push(event, cb);
 }
 
-class Transac{
+class Transac extends stream.Writable{
   constructor(label, serverUrl, {valueDate, compound, locked} = {}){
+    super();
     this.label = label;
     this.serverUrl = serverUrl;
     this.compound = compound;
@@ -158,6 +161,11 @@ class Transac{
     this.error = pushEvent.bind(this, 'error');
     this.queue = async.queue(publishEvent.bind(this), 1);
   }
+
+  _write(chunk, encoding, cb){
+    this.info(chunk.toString('utf8'), cb);
+  }
+
 }
 
 export default function transac(serverUrl){
