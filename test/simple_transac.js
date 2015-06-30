@@ -6,7 +6,7 @@ import os from 'os';
 import request from "request";
 import * as DB from './helpers/db';
 import params from "./params";
-import * as transacd   from "../../transacd2";
+import * as transacd   from "transacd";
 import transac  from "../src";
 
 let server, transacId;

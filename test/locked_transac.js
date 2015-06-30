@@ -3,7 +3,7 @@ import  async from "async";
 import  _ from "lodash";
 import * as DB from './helpers/db';
 import params from "./params";
-import * as transacd   from "../../transacd2";
+import * as transacd   from "transacd";
 import transac  from "../src";
 
 let server;
