@@ -1,6 +1,8 @@
 transac client API
 ==================
 
+[![Dependency Status](https://david-dm.org/redpelicans/transac/transac2.svg)](https://david-dm.org/redpelicans/transac/transac2)
+
 Node.js client for [transacd](https://github.com/redpelicans/transacd.git) server
 
 
