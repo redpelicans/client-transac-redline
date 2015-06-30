@@ -50,7 +50,7 @@ transac.exec('http://localhost:3002')('Building Indicators Data', run, {locked: 
 * label {String} event's label
 * messages {String} messages 
 
-Could be called as:
+Could be called as: 
 
 * (message), (Error), (messages) => messages will be created associated to `transac` object
 * (label, message), (label, Error), (label, messages) => an event will be created associated to messages
