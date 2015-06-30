@@ -1,5 +1,7 @@
 transac client API
 ==================
+[![Build Status](https://travis-ci.org/redpelicans/transac.png)](https://travis-ci.org/redpelicans/transac)
+
 
 Node.js client for [transacd](https://github.com/redpelicans/transacd.git) server
 
